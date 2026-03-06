@@ -7,6 +7,7 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
+*.class
 # https://maven.apache.org/wrapper/#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
 
@@ -15,3 +16,30 @@ buildNumber.properties
 .project
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
+
+# ===== Maven / Java / Spring Boot =====
+telemed-backend/target/
+telemed-backend/*.log
+telemed-backend/*.iml
+.idea/
+
+# ===== Node / Angular =====
+web-app/node_modules/
+web-app/dist/
+web-app/.env
+web-app/.cache/
+
+# ===== Android =====
+android-app/.gradle/
+android-app/build/
+android-app/.idea/
+android-app/local.properties
+
+# ===== General =====
+.DS_Store
+Thumbs.db
+.env
+.env.*
+
+# ===== Flyway local config (optional) =====
+telemed-backend/flyway.conf
