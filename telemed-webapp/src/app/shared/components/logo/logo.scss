@@ -1,0 +1,41 @@
+:host {
+  display: block;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+
+  &:hover .logo {
+    color: #000;
+  }
+
+  .logo {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: #1a202c;
+    line-height: 1;
+    transition: color 0.2s ease;
+
+    .dot {
+      color: #6366f1;
+    }
+  }
+
+  .motto {
+    font-size: 0.65rem;
+    color: #64748b;
+    font-weight: 700;
+    margin-top: 2px;
+    white-space: nowrap;
+
+    // Responsive: Hide motto on very small screens to save header space
+    @media (max-width: 400px) {
+      display: none;
+    }
+  }
+}

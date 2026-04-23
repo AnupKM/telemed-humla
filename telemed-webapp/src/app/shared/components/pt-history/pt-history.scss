@@ -1,0 +1,508 @@
+@use "sass:color";
+
+// 1. DESIGN TOKENS
+$primary-color: #0d6efd;
+$secondary-color: #6c757d;
+$success-color: #198754;
+$danger-color: #dc3545;
+$bg-light: #f8f9fa;
+$border-color: #e9ecef;
+$text-dark: #212529;
+$white: #ffffff;
+
+// 2. MAIN WRAPPER
+.records-wrapper {
+  padding: 1px;
+  animation: fadeIn 0.4s ease-in-out;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  @media (min-width: 768px) {
+    padding: 1.5rem;
+  }
+
+  .records-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+
+    @media (min-width: 480px) {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-text {
+      h2 {
+        margin: 0;
+        color: $text-dark;
+        font-weight: 700;
+        font-size: 1.25rem;
+      }
+
+      p {
+        margin: 0;
+        color: $secondary-color;
+        font-size: 0.85rem;
+      }
+    }
+  }
+}
+
+// 3. COMPACT INFO CARD (Vitals Status Bar)
+.info-summary-card.compact {
+  background: $white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid $border-color;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
+
+  .vitals-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+
+    .vital-item {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      min-width: fit-content;
+
+      .label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        color: $secondary-color;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+      }
+
+      .value {
+        font-weight: 700;
+        color: $text-dark;
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
+
+// 4. COLLAPSIBLE TIMELINE
+.records-timeline {
+  .header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0 0.5rem;
+
+    h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      color: $text-dark;
+    }
+  }
+
+  .timeline {
+    .timeline-entry {
+      display: flex;
+      gap: 0.75rem;
+
+      .entry-marker {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .dot {
+          width: 10px;
+          height: 10px;
+          background: $primary-color;
+          border-radius: 50%;
+          margin-top: 18px;
+          flex-shrink: 0;
+        }
+
+        .line {
+          width: 2px;
+          flex-grow: 1;
+          background: $border-color;
+        }
+      }
+
+      .entry-card {
+        flex: 1;
+        background: $white;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+        border: 1px solid $border-color;
+        margin-bottom: 1rem;
+        overflow: hidden;
+
+        .card-header.clickable {
+          padding: 12px 1rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          cursor: pointer;
+          transition: background 0.2s;
+
+          &:hover {
+            background-color: $bg-light;
+          }
+
+          .meta {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+
+            .date {
+              font-weight: 600;
+              font-size: 0.9rem;
+              color: $text-dark;
+              display: flex;
+              align-items: center;
+              gap: 8px;
+
+              .toggle-icon {
+                font-size: 0.65rem;
+                color: $secondary-color;
+                transition: transform 0.2s;
+              }
+            }
+
+            .doctor {
+              font-size: 0.75rem;
+              color: $secondary-color;
+              margin-left: 20px;
+            }
+          }
+        }
+
+        .card-actions {
+          display: flex;
+          gap: 4px;
+        }
+
+        // --- EXPANDABLE BODY LOGIC ---
+        .card-body {
+          display: grid;
+          grid-template-rows: 1fr;
+          /* Set to 1fr by default so it shows when @if is true */
+          opacity: 1;
+          overflow: hidden;
+          transition: grid-template-rows 0.3s ease-out, opacity 0.2s ease-out, padding 0.3s ease-out;
+          border-top: 1px solid $border-color;
+          background-color: #fcfcfc;
+          padding: 1.25rem;
+          /* Padding is preserved here */
+
+          .history-grid-wrapper {
+            min-height: 0;
+          }
+
+          .history-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.25rem;
+
+            .history-item {
+              label {
+                font-size: 0.7rem;
+                color: $secondary-color;
+                text-transform: uppercase;
+                font-weight: 700;
+                margin-bottom: 4px;
+                display: block;
+              }
+
+              p {
+                margin: 0;
+                font-size: 0.95rem;
+                color: color.adjust($text-dark, $lightness: 10%);
+                line-height: 1.4;
+              }
+            }
+          }
+        }
+      }
+
+      // Rotate icon when expanded
+      &.is-expanded .toggle-icon {
+        transform: rotate(90deg);
+      }
+    }
+  }
+}
+
+// --- NATIVE ANIMATION LIFECYCLE CLASSES ---
+// These only trigger when Angular adds/removes the element
+.expand-in {
+  @starting-style {
+    grid-template-rows: 0fr;
+    opacity: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+.collapse-out {
+  grid-template-rows: 0fr;
+  opacity: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  border-top-color: transparent;
+}
+
+// 5. SHARED UI ELEMENTS
+.btn-primary {
+  background: $primary-color;
+  color: $white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    filter: brightness(1.1);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  padding: 8px;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: all 0.2s;
+  border-radius: 4px;
+
+  &:hover {
+    opacity: 1;
+    background-color: rgba($primary-color, 0.05);
+  }
+
+  &.delete:hover {
+    color: $danger-color;
+    background-color: rgba($danger-color, 0.05);
+  }
+}
+
+.status-badge {
+  background: rgba($success-color, 0.1);
+  color: $success-color;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+// 6. ANIMATIONS
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================
+   MODAL & OVERLAY STYLES
+   ========================================= */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: 1rem;
+  box-sizing: border-box;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal-container {
+  width: 100%;
+  max-width: 750px;
+  animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.form-container {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  border: 1px solid $border-color;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  max-height: 90vh;
+  width: 100%;
+
+  .form-header {
+    background-color: $bg-light;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid $border-color;
+
+    .patient-mini-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+      font-size: 0.85rem;
+      color: $secondary-color;
+      margin-bottom: 8px;
+      align-items: center;
+
+      .pt-info {
+        color: $text-dark;
+        font-weight: 700;
+      }
+
+      .divider {
+        color: color.adjust($border-color, $lightness: -10%);
+      }
+    }
+
+    .header-main {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      h3 {
+        margin: 0;
+        font-size: 1.15rem;
+        color: $primary-color;
+        font-weight: 700;
+      }
+
+      .btn-close {
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        color: $secondary-color;
+        cursor: pointer;
+        padding: 4px 8px;
+        border-radius: 4px;
+        transition: all 0.2s;
+
+        &:hover {
+          color: #dc3545;
+          background-color: rgba(220, 53, 69, 0.1);
+        }
+      }
+    }
+  }
+
+  .clinical-form {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+
+    .form-body {
+      padding: 1.5rem;
+      overflow-y: auto;
+      max-height: 55vh;
+    }
+
+    .form-section {
+      margin-bottom: 1.5rem;
+
+      label {
+        display: block;
+        font-weight: 700;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        color: $secondary-color;
+        margin-bottom: 8px;
+        letter-spacing: 0.5px;
+      }
+
+      textarea {
+        width: 100%;
+        min-height: 120px;
+        padding: 12px 15px;
+        border: 1px solid $border-color;
+        border-radius: 8px;
+        font-family: inherit;
+        font-size: 0.95rem;
+        color: $text-dark;
+        line-height: 1.5;
+        resize: vertical;
+        transition: all 0.2s ease;
+        background-color: #ffffff;
+        box-sizing: border-box;
+
+        &::placeholder {
+          color: color.adjust($secondary-color, $lightness: 20%);
+          font-style: italic;
+        }
+
+        &:focus {
+          outline: none;
+          border-color: $primary-color;
+          box-shadow: 0 0 0 4px rgba($primary-color, 0.1);
+        }
+      }
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      padding: 1rem 1.5rem;
+      border-top: 1px solid $border-color;
+      background-color: #ffffff;
+
+      .btn-secondary {
+        background: #ffffff;
+        border: 1px solid $border-color;
+        color: $secondary-color;
+        padding: 0.7rem 1.5rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background: $bg-light;
+          color: $text-dark;
+        }
+      }
+    }
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

@@ -1,0 +1,66 @@
+<div class="register-container">
+  <h3>Register New Patient</h3>
+
+  <form [formGroup]="patientForm" (ngSubmit)="onSubmit()" class="patient-grid">
+    <div class="form-group">
+      <label>First Name*</label>
+      <input type="text" formControlName="firstName" placeholder="First Name">
+    </div>
+
+    <div class="form-group">
+      <label>Middle Name</label>
+      <input type="text" formControlName="middleName" placeholder="Middle Name">
+    </div>
+
+    <div class="form-group">
+      <label>Last Name*</label>
+      <input type="text" formControlName="lastName" placeholder="Last Name">
+    </div>
+
+    <div class="form-group">
+      <label>Gender</label>
+      <select formControlName="gender">
+        <option value="" disabled>Select Gender</option>
+        <option value="MALE">Male</option>
+        <option value="FEMALE">Female</option>
+        <option value="OTHER">Other</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Age</label>
+      <input type="number" formControlName="age">
+    </div>
+
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" formControlName="email" placeholder="email@example.com">
+    </div>
+
+    <div class="form-group">
+      <label>Phone Number</label>
+      <input type="text" formControlName="phone">
+    </div>
+
+    <div class="form-group">
+      <label>Date of Birth</label>
+      <input type="date" formControlName="dateOfBirth">
+    </div>
+
+    <div class="form-group">
+      <label>Height (cm)</label>
+      <input type="number" step="0.1" formControlName="heightCm">
+    </div>
+
+    <div class="form-group">
+      <label>Weight (kg)</label>
+      <input type="number" step="0.1" formControlName="weightKg">
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="patientForm.invalid" class="btn-primary">
+        Register Patient
+      </button>
+    </div>
+  </form>
+</div>

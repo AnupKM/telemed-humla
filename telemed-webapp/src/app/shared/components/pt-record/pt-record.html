@@ -1,0 +1,59 @@
+<div class="records-wrapper">
+  <div class="records-header">
+    <div class="header-text">
+      <h2>Patient Records</h2>
+      <p>Manage and view all registered patients in the system.</p>
+    </div>
+    <button class="btn-primary" (click)="onSearch()" [disabled]="isLoading()">
+      @if (isLoading()) {
+      <span class="spinner"></span> Searching...
+      } @else {
+      <span class="icon">🔍</span> Search Now
+      }
+    </button>
+  </div>
+
+  <div class="table-card">
+    @if (isLoading()) {
+    <div class="state-container">
+      <div class="loading-bar"></div>
+      <p>Fetching clinical records...</p>
+    </div>
+    } @else if (patients().length > 0) {
+    <div class="table-responsive">
+      <table class="pt-table">
+        <thead>
+          <tr>
+            <th>Patient Name</th>
+            <th>Age</th>
+            <th>Contact</th>
+            <th>Status</th>
+            <th class="text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (pt of patients(); track pt.firstName) {
+          <tr class="table-row">
+            <td class="bold-text">{{ pt.firstName }} {{ pt.lastName }}</td>
+            <td>{{ pt.age }} yrs</td>
+            <td>{{ pt.phone || 'No phone' }}</td>
+            <td><span class="status-badge">Active</span></td>
+            <td class="text-center">
+              <button class="btn-icon" title="View Details" (click)="viewPatientHistory(pt)">
+                👁️
+              </button>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    } @else {
+    <div class="state-container empty">
+      <span class="empty-icon">📁</span>
+      <h3>No Records Found</h3>
+      <p>Click the search button above to pull the latest patient data from the server.</p>
+    </div>
+    }
+  </div>
+</div>

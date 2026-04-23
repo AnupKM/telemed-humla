@@ -1,0 +1,151 @@
+<div class="records-wrapper">
+  <div class="records-header">
+    @if (selectedPatient(); as pt) {
+    <div class="header-text">
+      <h2>{{ pt.firstName }} {{ pt.lastName }}</h2>
+      <p>Clinical Overview</p>
+    </div>
+    <button class="btn-primary" (click)="onAddRecord()">
+      <span class="icon">➕</span> Add Record
+    </button>
+    }
+  </div>
+
+  @if (selectedPatient(); as pt) {
+  <div class="table-card info-summary-card compact">
+    <div class="vitals-grid">
+      <div class="vital-item">
+        <span class="label">Sex</span>
+        <span class="value">{{ pt.gender ? pt.gender : 'N/A'}}</span>
+      </div>
+      <div class="vital-item">
+        <span class="label">Age</span>
+        <span class="value">{{ pt.age ? pt.age + 'y' : 'N/A' }}</span>
+      </div>
+      <div class="vital-item">
+        <span class="label">Wt</span>
+        <span class="value">{{ pt.weightKg ? pt.weightKg + 'kg' : 'N/A' }}</span>
+      </div>
+      <div class="vital-item">
+        <span class="label">Ht</span>
+        <span class="value">{{ pt.heightCm ? pt.heightCm + 'cm' : 'N/A' }}</span>
+      </div>
+    </div>
+  </div>
+  }
+
+  <div class="records-timeline">
+    <div class="header-row">
+      <h3>Clinical History</h3>
+      <span class="status-badge">{{ records().length }} Visits</span>
+    </div>
+
+    <div class="timeline">
+      @for (record of records(); track record.id) {
+      <div class="timeline-entry" [class.is-expanded]="record.expanded">
+        <div class="entry-marker">
+          <div class="dot"></div>
+          <div class="line"></div>
+        </div>
+
+        <div class="entry-card table-card">
+          <div class="card-header clickable" (click)="toggleRecord(record.id)">
+            <div class="meta">
+              <span class="date">
+                <span class="toggle-icon">{{ record.expanded ? '▼' : '▶' }}</span>
+                Medical Record: Visit on {{ record.createdAt | date:'mediumDate' }}
+              </span>
+              @if (record.expanded) {
+              <span class="doctor">Managed by Dr: {{ record.recordCreatedByFullName }}</span>
+              }
+            </div>
+
+            <div class="card-actions" (click)="$event.stopPropagation()">
+              <button class="btn-icon" (click)="onEditRecord(record)">📝</button>
+              <button class="btn-icon delete" (click)="onDeleteRecord(record.id)">🗑️</button>
+            </div>
+          </div>
+
+          @if (record.expanded) {
+          <div class="card-body" animate.enter="expand-in" animate.leave="collapse-out">
+            <div class="history-grid">
+              @for (item of record.patientHistory | keyvalue; track item.key) {
+              <div class="history-item">
+                <label>{{ item.key }}</label>
+                <p>{{ item.value }}</p>
+              </div>
+              }
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</div>
+
+
+<!-----------------Add/Edit Form--------------------->
+@if (isFormOpen()) {
+<div class="modal-overlay" (click)="closeForm()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <div class="form-container">
+
+      <div class="form-header">
+        <div class="patient-mini-summary">
+          @if (selectedPatient(); as pt) {
+          <span class="pt-info"><strong>{{ pt.firstName }} {{ pt.lastName }}</strong></span>
+          <span class="divider">|</span>
+          <span>{{ pt.gender ? pt.gender : 'N/A'}}</span>
+          <span class="divider">|</span>
+          <span>{{ pt.age ? pt.age + 'y' : 'N/A' }}</span>
+          <span class="divider">|</span>
+          <span>{{ pt.heightCm ? pt.heightCm + 'cm' : 'N/A' }}</span>
+          <span class="divider">|</span>
+          <span>{{ pt.weightKg ? pt.weightKg + 'kg' : 'N/A' }}</span>
+          }
+        </div>
+        <div class="header-main">
+          <h3>{{ isEditMode() ? 'Edit Clinical Record' : 'New Clinical Record' }}</h3>
+          <button class="btn-close" (click)="closeForm()">✕</button>
+        </div>
+      </div>
+
+      <form class="clinical-form">
+        <div class="form-body">
+          <div class="form-section">
+            <label>History</label>
+            <textarea [(ngModel)]="currentRecord.history" name="history" rows="4"
+              placeholder="Chief complaints and duration..." spellcheck="true">
+              </textarea>
+          </div>
+
+          <div class="form-section">
+            <label>Diagnosis</label>
+            <textarea [(ngModel)]="currentRecord.diagnosis" name="diagnosis" rows="4"
+              placeholder="Clinical assessment..." spellcheck="true">
+              </textarea>
+          </div>
+
+          <div class="form-section">
+            <label>Plan</label>
+            <textarea [(ngModel)]="currentRecord.plan" name="plan" rows="4" placeholder="Prescriptions and follow-up..."
+              spellcheck="true">
+              </textarea>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" (click)="cancelForm()">Cancel</button>
+
+          <button type="button" class="btn-primary" (click)="saveRecord()" [disabled]="isSaving()">
+            {{ isSaving() ? 'Saving...' : (isEditMode() ? 'Update Record' : 'Save Record') }}
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+}

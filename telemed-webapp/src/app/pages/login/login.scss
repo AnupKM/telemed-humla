@@ -1,0 +1,160 @@
+$primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+$glass-bg: rgba(255, 255, 255, 0.9);
+$text-main: #2d3748;
+$text-muted: #718096;
+$transition: all 0.3s ease;
+
+.login-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: $primary-gradient;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  overflow: hidden;
+
+  .circle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 1;
+
+    &-1 {
+      width: 300px;
+      height: 300px;
+      top: -100px;
+      left: -100px;
+    }
+
+    &-2 {
+      width: 200px;
+      height: 200px;
+      bottom: -50px;
+      right: -50px;
+    }
+  }
+
+  .login-content {
+    display: flex;
+    flex-direction: column; // Stacks logo on top of card
+    align-items: center; // Centers them both horizontally
+    z-index: 10; // Ensures it stays above the circles
+    width: 100%;
+    max-width: 420px; // Matches your card width
+  }
+
+  .floating-logo {
+    margin-bottom: 2.5rem;
+
+    ::ng-deep .brand {
+      align-items: center;
+
+      .logo {
+        color: white;
+        font-size: 2.2rem;
+
+        .dot {
+          color: #fff;
+        }
+      }
+
+      .motto {
+        color: rgba(255, 255, 255, 0.8);
+      }
+    }
+  }
+
+  .login-card {
+    background: $glass-bg;
+    backdrop-filter: blur(10px); // Frosted glass effect
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+
+    h2 {
+      margin-bottom: 0.5rem;
+      color: $text-main;
+      font-size: 1.8rem;
+    }
+
+    p {
+      color: $text-muted;
+      margin-bottom: 2rem;
+      font-size: 0.9rem;
+    }
+  }
+
+  form {
+    .input-group {
+      text-align: left;
+      margin-bottom: 1.5rem;
+
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: $text-main;
+      }
+
+      input {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 2px solid transparent;
+        background: #f7fafc;
+        border-radius: 10px;
+        transition: $transition;
+
+        &:focus {
+          outline: none;
+          background: white;
+          border-color: #667eea;
+          box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        &::placeholder {
+          color: #a0aec0;
+        }
+      }
+    }
+
+    button {
+      width: 100%;
+      padding: 1rem;
+      margin-top: 1rem;
+      background: $primary-gradient;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: $transition;
+
+      &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(118, 75, 162, 0.4);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        background: #cbd5e1;
+        transform: none !important;
+      }
+    }
+
+    .error-message {
+      color: #e53e3e;
+      font-size: 0.85rem;
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+  }
+}

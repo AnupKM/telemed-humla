@@ -1,0 +1,62 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #e2e8f0;
+
+  @media (min-width: 768px) {
+    padding: 0.75rem 5%;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    @media (min-width: 768px) {
+      gap: 2rem;
+    }
+
+    a {
+      text-decoration: none;
+      color: #64748b;
+      font-weight: 500;
+      font-size: 0.9rem;
+
+      @media (min-width: 768px) {
+        font-size: 1rem;
+      }
+
+      &.active {
+        color: #6366f1;
+      }
+    }
+
+    .logout-btn {
+      padding: 0.4rem 0.75rem;
+      border: 1px solid #e2e8f0;
+      background: white;
+      border-radius: 6px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+
+      @media (min-width: 768px) {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+      }
+
+      &:hover {
+        background: #fee2e2;
+        color: #ef4444;
+        border-color: #fecaca;
+      }
+    }
+  }
+}
