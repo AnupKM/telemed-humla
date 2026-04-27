@@ -43,3 +43,10 @@ Thumbs.db
 
 # ===== Flyway local config (optional) =====
 telemed-backend/flyway.conf
+logs/
+
+# test config
+**/application-test.yaml
+
+# seeder file
+**/DataSeeder.java

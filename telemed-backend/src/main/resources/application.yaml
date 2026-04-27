@@ -2,13 +2,17 @@ spring:
   application:
     name: telemed-backend
 
+    jpa:
+      open-in-view: false
+
   datasource:
     url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=require
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
     hikari:
-      maximum-pool-size: 4
+      maximum-pool-size: 10
+      minimum-idle: 2
       connection-timeout: 30000
       max-lifetime: 240000
       idle-timeout: 120000
@@ -40,3 +44,18 @@ management:
     web:
       exposure:
         include: health
+
+logging:
+  level:
+    root: INFO
+    org.springframework.security: DEBUG
+    com.telemed.backend: DEBUG
+
+jwt:
+  secret: ${JWT_SECRET:?JWT secret must be set}
+  access-expiration: 3600000
+  refresh-expiration: 604800000
+
+app:
+  encryption:
+    key: ${ENCRYPTION_KEY:?Encryption key must be set}
