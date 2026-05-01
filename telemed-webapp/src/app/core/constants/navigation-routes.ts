@@ -1,5 +1,6 @@
 export const NAV_ROUTES = {
   LOGIN: '/login',
+  UNAUTHORIZED: '/unauthorized',
   DASHBOARD: {
     ROOT: '/dashboard',
     REGISTER: '/dashboard/pt-register',

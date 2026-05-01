@@ -1,5 +1,6 @@
 export interface LoginModel {
-    token: string;
+    accessToken: string;
+    refreshToken?: string;
     userId: string;
     email: string;
     fullName: string;
