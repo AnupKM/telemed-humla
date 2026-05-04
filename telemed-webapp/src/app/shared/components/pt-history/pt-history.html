@@ -66,18 +66,18 @@
             </div>
           </div>
 
-          @if (record.expanded) {
-          <div class="card-body" animate.enter="expand-in" animate.leave="collapse-out">
-            <div class="history-grid">
-              @for (item of record.patientHistory | keyvalue; track item.key) {
-              <div class="history-item">
-                <label>{{ item.key }}</label>
-                <p>{{ item.value }}</p>
+          <div class="card-body" [class.is-expanded]="record.expanded">
+            <div class="history-grid-wrapper">
+              <div class="history-grid">
+                @for (item of record.patientHistory | keyvalue; track item.key) {
+                <div class="history-item">
+                  <label>{{ item.key }}</label>
+                  <p>{{ item.value }}</p>
+                </div>
+                }
               </div>
-              }
             </div>
           </div>
-          }
         </div>
       </div>
       }
