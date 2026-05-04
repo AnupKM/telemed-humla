@@ -45,7 +45,7 @@ public class UserService {
 
     public User authenticate(String email, String password) {
 
-        User user = userRepository.findActiveByEmail(email)
+        User user = userRepository.findActiveByEmailWithRoles(email)
                 .orElseThrow(() -> new AuthenticationException("Invalid email or password"));
 
         if (user.isAccountLocked()) {
