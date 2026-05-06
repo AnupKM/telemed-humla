@@ -6,6 +6,8 @@ import com.telemed.backend.security.SecurityUtils;
 import com.telemed.backend.service.MedicalRecordService;
 import com.telemed.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -35,6 +37,19 @@ public class MedicalRecordController {
         List<RecordResponse> records = medicalRecordService.getRecordsByPatientId(patientId);
         return ResponseEntity.ok(records);
     }
+
+    @GetMapping("/{{patientId}/{recordId}/pdf")
+    @PreAuthorize("hasRole('DOCTOR')")
+    public ResponseEntity<byte[]> downloadPdfByRecordId(@PathVariable UUID patientId, @PathVariable UUID recordId) {
+
+        byte[] pdf = medicalRecordService.generatePdfByRecordId(patientId, recordId);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=patient_record.pdf")
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(pdf);
+    }
+
 
     @PostMapping("/add")
     @PreAuthorize("hasRole('DOCTOR')")

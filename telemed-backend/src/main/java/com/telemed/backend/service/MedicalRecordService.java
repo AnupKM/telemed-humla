@@ -28,6 +28,7 @@ public class MedicalRecordService {
     private final RecordRepository recordRepository;
     private final PatientRepository patientRepository;
     private final UserRepository userRepository;
+    private final MedicalRecordPdfService pdfService;
 
     public List<RecordResponse> getRecordsByPatientId(UUID patientId) {
         return recordRepository.findAllByPatientId(patientId)
@@ -91,6 +92,14 @@ public class MedicalRecordService {
         }
 
         return mapToResponse(recordRepository.save(record));
+    }
+
+    public byte[] generatePdfByRecordId(UUID patientId, UUID recordId){
+
+        Patient patient = patientRepository.findById(patientId).orElseThrow(() -> new RuntimeException("Patient not found"));
+        MedicalRecord record = recordRepository.findById(recordId).orElseThrow(() -> new RuntimeException("Record not found"));
+        return pdfService.generateSingleMedicalRecordPdf(patient, record);
+
     }
 
     private RecordResponse mapToResponse(MedicalRecord mRecord) {
