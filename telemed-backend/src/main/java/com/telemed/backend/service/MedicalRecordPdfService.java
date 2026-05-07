@@ -43,7 +43,7 @@ public class MedicalRecordPdfService {
             addTableCell(infoTable, "Patient Name:", patient.getFirstName() + " " + patient.getLastName(), labelFont, textFont);
             addTableCell(infoTable, "Age:", String.valueOf(patient.getAge()), labelFont, textFont);
             addTableCell(infoTable, "Date of Birth:", patient.getDateOfBirth().toString(), labelFont, textFont);
-            addTableCell(infoTable, "Attending Provider:", record.getCreator(), labelFont, textFont);
+            addTableCell(infoTable, "Attending Provider:", record.getCreator().getFullName(), labelFont, textFont);
 
             document.add(infoTable);
             document.add(new LineSeparator());

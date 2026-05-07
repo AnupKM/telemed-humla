@@ -38,7 +38,7 @@ public class MedicalRecordController {
         return ResponseEntity.ok(records);
     }
 
-    @GetMapping("/{{patientId}/{recordId}/pdf")
+    @GetMapping("/{patientId}/{recordId}/pdf")
     @PreAuthorize("hasRole('DOCTOR')")
     public ResponseEntity<byte[]> downloadPdfByRecordId(@PathVariable UUID patientId, @PathVariable UUID recordId) {
 
