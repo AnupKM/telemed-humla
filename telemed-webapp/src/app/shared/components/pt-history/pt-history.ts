@@ -86,7 +86,7 @@ export class PtHistory implements OnInit {
       history: record.patientHistory['History'] || '',
       diagnosis: record.patientHistory['Diagnosis'] || '',
       plan: record.patientHistory['Plan'] || '',
-      createdAt: record.createdAt // Keep original creation date
+      createdAt: record.createdAt
     };
     this.isFormOpen.set(true);
   }
@@ -149,6 +149,29 @@ export class PtHistory implements OnInit {
       this.resetForm();
       this.isFormOpen.set(false);
     }
+  }
+
+  onDownloadPdf(record: PatientRecordModel) {
+
+    this.historyService.downloadPdf(record.id).subscribe({
+      next: (blob: Blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+
+        const pt = this.selectedPatient();
+        const fileName = pt
+          ? `Medical_Record_${pt.lastName}_${record.createdAt}.pdf`
+          : `Medical_Record_${record.id}.pdf`;
+
+        link.download = fileName;
+        link.click();
+        window.URL.revokeObjectURL(url);
+      },
+      error: (err) => {
+        console.error('Download failed', err);
+      }
+    });
   }
 
   onDeleteRecord(id: string) {

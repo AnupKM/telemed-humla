@@ -5,7 +5,7 @@
       <h2>{{ pt.firstName }} {{ pt.lastName }}</h2>
       <p>Clinical Overview</p>
     </div>
-    <button class="btn-primary" (click)="onAddRecord()">
+    <button class="btn-primary" (click)="onAddRecord()" title="Create new record">
       <span class="icon">➕</span> Add Record
     </button>
     }
@@ -61,8 +61,9 @@
             </div>
 
             <div class="card-actions" (click)="$event.stopPropagation()">
-              <button class="btn-icon" (click)="onEditRecord(record)">📝</button>
-              <button class="btn-icon delete" (click)="onDeleteRecord(record.id)">🗑️</button>
+              <button class="btn-icon" (click)="onEditRecord(record)" title="Edit record">📝</button>
+              <button class="btn-icon download" (click)="onDownloadPdf(record)" title="Download PDF">📥</button>
+              <button class="btn-icon delete" (click)="onDeleteRecord(record.id)" title="Delete record">🗑️</button>
             </div>
           </div>
 
@@ -95,15 +96,27 @@
       <div class="form-header">
         <div class="patient-mini-summary">
           @if (selectedPatient(); as pt) {
-          <span class="pt-info"><strong>{{ pt.firstName }} {{ pt.lastName }}</strong></span>
-          <span class="divider">|</span>
-          <span>{{ pt.gender ? pt.gender : 'N/A'}}</span>
-          <span class="divider">|</span>
-          <span>{{ pt.age ? pt.age + 'y' : 'N/A' }}</span>
-          <span class="divider">|</span>
-          <span>{{ pt.heightCm ? pt.heightCm + 'cm' : 'N/A' }}</span>
-          <span class="divider">|</span>
-          <span>{{ pt.weightKg ? pt.weightKg + 'kg' : 'N/A' }}</span>
+
+          <div class="summary-chip primary">
+            {{ pt.firstName }} {{ pt.lastName }}
+          </div>
+
+          <div class="summary-chip">
+            {{ pt.gender ? pt.gender : 'N/A' }}
+          </div>
+
+          <div class="summary-chip">
+            {{ pt.age ? pt.age + 'y' : 'N/A' }}
+          </div>
+
+          <div class="summary-chip">
+            {{ pt.heightCm ? pt.heightCm + 'cm' : 'N/A' }}
+          </div>
+
+          <div class="summary-chip">
+            {{ pt.weightKg ? pt.weightKg + 'kg' : 'N/A' }}
+          </div>
+
           }
         </div>
         <div class="header-main">
@@ -117,22 +130,19 @@
           <div class="form-section">
             <label>History</label>
             <textarea [(ngModel)]="currentRecord.history" name="history" rows="4"
-              placeholder="Chief complaints and duration..." spellcheck="true">
-              </textarea>
+              placeholder="Chief complaints and duration..." spellcheck="true"></textarea>
           </div>
 
           <div class="form-section">
             <label>Diagnosis</label>
             <textarea [(ngModel)]="currentRecord.diagnosis" name="diagnosis" rows="4"
-              placeholder="Clinical assessment..." spellcheck="true">
-              </textarea>
+              placeholder="Clinical assessment..." spellcheck="true"></textarea>
           </div>
 
           <div class="form-section">
             <label>Plan</label>
             <textarea [(ngModel)]="currentRecord.plan" name="plan" rows="4" placeholder="Prescriptions and follow-up..."
-              spellcheck="true">
-              </textarea>
+              spellcheck="true"></textarea>
           </div>
         </div>
 

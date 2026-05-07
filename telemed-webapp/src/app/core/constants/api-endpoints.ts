@@ -16,6 +16,7 @@ export const API_ENDPOINTS = {
     GET_BY_ID: (id: string) => `/records/${id}`,
     ADD: '/records/add',
     UPDATE: (id: string) => `/records/${id}`,
-    DELETE: (id: string) => `/records/${id}`
+    DELETE: (id: string) => `/records/${id}`,
+    DOWNLOAD_PDF_BY_RECORDID: (recordId: string) => `/records/${recordId}/pdf`
   }
 };
