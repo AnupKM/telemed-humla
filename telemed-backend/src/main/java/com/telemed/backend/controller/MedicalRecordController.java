@@ -38,11 +38,11 @@ public class MedicalRecordController {
         return ResponseEntity.ok(records);
     }
 
-    @GetMapping("/{patientId}/{recordId}/pdf")
+    @GetMapping("/{recordId}/pdf")
     @PreAuthorize("hasRole('DOCTOR')")
-    public ResponseEntity<byte[]> downloadPdfByRecordId(@PathVariable UUID patientId, @PathVariable UUID recordId) {
+    public ResponseEntity<byte[]> downloadPdfByRecordId(@PathVariable UUID recordId) {
 
-        byte[] pdf = medicalRecordService.generatePdfByRecordId(patientId, recordId);
+        byte[] pdf = medicalRecordService.generatePdfByRecordId(recordId);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=patient_record.pdf")

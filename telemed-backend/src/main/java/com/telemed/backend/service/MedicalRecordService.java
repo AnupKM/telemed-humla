@@ -94,11 +94,10 @@ public class MedicalRecordService {
         return mapToResponse(recordRepository.save(record));
     }
 
-    public byte[] generatePdfByRecordId(UUID patientId, UUID recordId){
+    public byte[] generatePdfByRecordId(UUID recordId){
 
-        Patient patient = patientRepository.findById(patientId).orElseThrow(() -> new RuntimeException("Patient not found"));
         MedicalRecord record = recordRepository.findById(recordId).orElseThrow(() -> new RuntimeException("Record not found"));
-        return pdfService.generateSingleMedicalRecordPdf(patient, record);
+        return pdfService.generateSingleMedicalRecordPdf(record);
 
     }
 
