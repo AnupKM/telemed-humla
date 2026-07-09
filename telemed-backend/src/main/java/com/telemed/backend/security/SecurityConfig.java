@@ -59,14 +59,18 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(List.of( "http://localhost:4200",
-                "http://192.168.1.155:4200",
-                "https://telemed-humla.pages.dev"));
+
+        String allowedOriginsEnv = System.getenv("ALLOWED_ORIGINS");
+        List<String> origins = (allowedOriginsEnv != null && !allowedOriginsEnv.isBlank())
+                ? Arrays.asList(allowedOriginsEnv.split(","))
+                : List.of("http://localhost:4200", "http://192.168.1.155:4200");
+
+        configuration.setAllowedOriginPatterns(origins);
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Cache-Control","Origin",
-                "Accept", "X-Requested-With"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Cache-Control", "Origin", "Accept", "X-Requested-With"));
         configuration.setAllowCredentials(true);
         configuration.setExposedHeaders(List.of("Authorization"));
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
